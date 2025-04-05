@@ -14,7 +14,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 60px; /* Add padding at the bottom for better scrolling experience */
         }
 
         .main-content {
@@ -289,6 +291,1050 @@
                 transform: translateY(0);
             }
         }
+
+        /* Event selection and results styling */
+        .event-selection {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2rem;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        #event-dropdown {
+            width: 100%;
+            padding: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #7af7ff;
+            color: #fff;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 0 15px rgba(122, 247, 255, 0.3);
+        }
+
+        #event-dropdown option {
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+        }
+
+        #analyze-btn {
+            background: #7af7ff;
+            color: #000;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        #analyze-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(122, 247, 255, 0.5);
+        }
+
+        /* Results styling */
+        .results-container {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #7af7ff;
+            border-radius: 15px;
+            padding: 2rem;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(122, 247, 255, 0.3);
+        }
+
+        .chart-container {
+            width: 100%;
+            margin: 1rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .chart-container img {
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .comments-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(122, 247, 255, 0.3);
+            border-radius: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: #7af7ff rgba(122, 247, 255, 0.1);
+        }
+        
+        /* Custom scrollbar styling */
+        .comments-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .comments-container::-webkit-scrollbar-track {
+            background: rgba(122, 247, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .comments-container::-webkit-scrollbar-thumb {
+            background: #7af7ff;
+            border-radius: 4px;
+        }
+        
+        .comments-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(122, 247, 255, 0.8);
+        }
+
+        .comment {
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            border-radius: 8px;
+            font-family: 'Arial', sans-serif;
+            word-wrap: break-word;
+        }
+        
+        .confidence-score {
+            display: inline-block;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .positive {
+            background: rgba(144, 238, 144, 0.2);
+            border-left: 4px solid lightgreen;
+        }
+
+        .neutral {
+            background: rgba(255, 215, 0, 0.2);
+            border-left: 4px solid gold;
+        }
+
+        .negative {
+            background: rgba(255, 99, 71, 0.2);
+            border-left: 4px solid salmon;
+        }
+
+        .issue-tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .issue-confidence {
+            display: inline-block;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .alert-tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+            background: rgba(255, 0, 0, 0.3);
+            color: #fff;
+        }
+
+        .note-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        /* Event comparison styling */
+        .comparison-container {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 2rem;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8));
+            border: 2px solid #7af7ff;
+            border-radius: 15px;
+            padding: 2rem;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(122, 247, 255, 0.4), inset 0 0 50px rgba(122, 247, 255, 0.1);
+            animation: glow 4s infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .comparison-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(122, 247, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 30px rgba(122, 247, 255, 0.4), inset 0 0 50px rgba(122, 247, 255, 0.1); }
+            100% { box-shadow: 0 0 40px rgba(122, 247, 255, 0.6), inset 0 0 60px rgba(122, 247, 255, 0.2); }
+        }
+        
+        .comparison-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #7af7ff;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(122, 247, 255, 0.8);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .comparison-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #7af7ff, transparent);
+        }
+        
+        .vs-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5rem;
+            opacity: 0.1;
+            color: #7af7ff;
+            font-weight: bold;
+            z-index: -1;
+            animation: pulse 3s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.1); }
+        }
+        
+        .event-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            perspective: 1000px;
+        }
+        
+        .event-checkbox {
+            display: none;
+        }
+        
+        .event-label {
+            padding: 0.6rem 1.2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(122, 247, 255, 0.5);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+        }
+        
+        .event-label::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(122, 247, 255, 0.8), transparent 70%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+            z-index: -1;
+        }
+        
+        .event-checkbox:checked + .event-label {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: #7af7ff;
+            box-shadow: 0 0 15px rgba(122, 247, 255, 0.7);
+            transform: translateZ(20px);
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        .event-checkbox:checked + .event-label::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.2;
+        }
+        
+        .event-label:hover {
+            transform: translateZ(10px) scale(1.05);
+            box-shadow: 0 0 10px rgba(122, 247, 255, 0.4);
+            border-color: rgba(122, 247, 255, 0.7);
+        }
+        
+        .compare-btn {
+            display: block;
+            margin: 1.5rem auto;
+            background: transparent;
+            color: white;
+            border: 2px solid #7af7ff;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .compare-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, #7af7ff 0%, rgba(122, 247, 255, 0.2) 70%);
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: -1;
+            transform: translate(-50%, -50%) scale(0);
+        }
+        
+        .compare-btn:hover {
+            color: #000;
+            border-color: #7af7ff;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(122, 247, 255, 0.5);
+        }
+        
+        .compare-btn:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .comparison-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            perspective: 600px;
+        }
+        
+        .tab-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(122, 247, 255, 0.4);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(122, 247, 255, 0.2), transparent);
+            transition: transform 0.5s ease;
+        }
+        
+        .tab-btn:hover::before {
+            transform: translateX(200%);
+        }
+        
+        .tab-btn.active {
+            background: rgba(122, 247, 255, 0.2);
+            border-color: #7af7ff;
+            transform: translateZ(20px);
+            box-shadow: 0 0 15px rgba(122, 247, 255, 0.5);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }
+        
+        .comparison-chart-container {
+            width: 100%;
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .comparison-chart {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: translateZ(0);
+            border: 1px solid rgba(122, 247, 255, 0.3);
+            animation: floatIn 1s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes floatIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) translateZ(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
+        
+        .comparison-chart:hover {
+            transform: translateZ(30px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(122, 247, 255, 0.5);
+        }
+        
+        .chart-caption {
+            text-align: center;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: -1rem;
+            font-style: italic;
+        }
+        
+        .comparison-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            perspective: 800px;
+        }
+        
+        .event-stat {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1.2rem;
+            border-radius: 12px;
+            min-width: 200px;
+            text-align: center;
+            border: 1px solid rgba(122, 247, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            transform: rotateX(5deg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeInScale 0.6s ease-out forwards;
+            opacity: 0;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+        
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: rotateX(20deg) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: rotateX(5deg) scale(1);
+            }
+        }
+        
+        .event-stat:hover {
+            transform: rotateX(0) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 10px rgba(122, 247, 255, 0.3);
+            border-color: rgba(122, 247, 255, 0.6);
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .event-stat-name {
+            font-weight: bold;
+            color: #7af7ff;
+            margin-bottom: 0.7rem;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px rgba(122, 247, 255, 0.5);
+        }
+        
+        .stat-value {
+            margin: 0.4rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .stat-positive {
+            color: lightgreen;
+        }
+        
+        .stat-neutral {
+            color: gold;
+        }
+        
+        .stat-negative {
+            color: salmon;
+        }
+
+        /* Loading animation */
+        .loader {
+            display: none;
+            border: 4px solid rgba(122, 247, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #7af7ff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Scroll down button */
+        .scroll-down-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(122, 247, 255, 0.3);
+            border: 2px solid #7af7ff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(122, 247, 255, 0.5);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .scroll-down-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-down-btn:hover {
+            background: rgba(122, 247, 255, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .scroll-down-btn::after {
+            content: "↓";
+            color: #fff;
+            font-size: 24px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        
+        .scroll-down-btn.up::after {
+            content: "↑";
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            overflow-y: auto;
+        }
+
+        /* Issues Analysis Container Styling */
+        .issues-container {
+            display: none;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 2rem;
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 30, 0.8));
+            border: 2px solid #ff7a7a;
+            border-radius: 15px;
+            padding: 2rem;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(255, 122, 122, 0.4), inset 0 0 50px rgba(255, 122, 122, 0.1);
+            animation: issuesGlow 4s infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes issuesGlow {
+            0% { box-shadow: 0 0 30px rgba(255, 122, 122, 0.4), inset 0 0 50px rgba(255, 122, 122, 0.1); }
+            100% { box-shadow: 0 0 40px rgba(255, 122, 122, 0.6), inset 0 0 60px rgba(255, 122, 122, 0.2); }
+        }
+
+        .issues-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 122, 122, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        .issues-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #ff7a7a;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(255, 122, 122, 0.8);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .issues-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff7a7a, transparent);
+        }
+
+        .issues-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            perspective: 600px;
+            flex-wrap: wrap;
+        }
+
+        .issues-tab-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 122, 122, 0.4);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .issues-tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 122, 122, 0.2), transparent);
+            transition: transform 0.5s ease;
+        }
+
+        .issues-tab-btn:hover::before {
+            transform: translateX(200%);
+        }
+
+        .issues-tab-btn.active {
+            background: rgba(255, 122, 122, 0.2);
+            border-color: #ff7a7a;
+            transform: translateZ(20px);
+            box-shadow: 0 0 15px rgba(255, 122, 122, 0.5);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }
+
+        .issues-chart-container {
+            width: 100%;
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .issues-chart {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: translateZ(0);
+            border: 1px solid rgba(255, 122, 122, 0.3);
+            animation: issuesFloatIn 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes issuesFloatIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) translateZ(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
+
+        .issues-chart:hover {
+            transform: translateZ(30px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 122, 122, 0.5);
+        }
+
+        .issues-overview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .issue-card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 1.5rem;
+            width: 280px;
+            border: 1px solid transparent;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .issue-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, transparent, var(--issue-color), transparent);
+        }
+
+        .issue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: var(--issue-color);
+        }
+
+        .issue-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--issue-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .issue-stats {
+            margin-top: 1rem;
+        }
+
+        .issue-stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .issue-stat-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .issue-stat-value {
+            font-weight: bold;
+            color: white;
+        }
+
+        .issue-progress {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 0.8rem 0;
+            overflow: hidden;
+        }
+
+        .issue-progress-bar {
+            height: 100%;
+            background: var(--issue-color);
+            border-radius: 3px;
+            transition: width 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .issue-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                rgba(255, 255, 255, 0) 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .deep-research-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 122, 122, 0.3);
+        }
+
+        .deep-research-title {
+            color: #ff7a7a;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .issues-action-btn {
+            display: block;
+            margin: 1.5rem auto;
+            background: transparent;
+            color: white;
+            border: 2px solid #ff7a7a;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .issues-action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, #ff7a7a 0%, rgba(255, 122, 122, 0.2) 70%);
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: -1;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        .issues-action-btn:hover {
+            color: #000;
+            border-color: #ff7a7a;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 122, 122, 0.5);
+        }
+
+        .issues-action-btn:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .issues-count-container {
+            width: 100%;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .issues-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .issues-table th,
+        .issues-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .issues-table th {
+            background: rgba(0, 0, 0, 0.8);
+            color: #ff7a7a;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .issues-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .issues-table tbody tr:hover {
+            background: rgba(255, 122, 122, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .issues-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .issues-table .issue-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .issues-table .issue-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .issues-table .issue-count {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .issues-table .issue-details {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .comment-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comment-item {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(30, 30, 40, 0.6);
+            border-radius: 8px;
+            border-left: 4px solid var(--comment-color);
+            transition: all 0.3s ease;
+        }
+
+        .comment-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .comment-item.alert {
+            border-left-color: #ff4757;
+            background: rgba(50, 20, 20, 0.6);
+        }
+
+        .comment-text {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .comment-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .comment-event {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .alert-badge {
+            background: #ff4757;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            animation: pulsate 2s infinite;
+        }
+
+        @keyframes pulsate {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -301,6 +1347,97 @@
         <button class="enter-button">Enter the Event</button>
     </div>
 
+    <!-- Event selection form (initially hidden) -->
+    <div class="event-selection" id="event-selection">
+        <select id="event-dropdown">
+            <option value="" disabled selected>Select an event</option>
+        </select>
+        <button id="analyze-btn">Analyze</button>
+    </div>
+
+    <!-- Loading spinner -->
+    <div class="loader" id="loader"></div>
+
+    <!-- Results container (initially hidden) -->
+    <div class="results-container" id="results-container">
+        <h2 id="event-title" style="text-align: center; color: #7af7ff;"></h2>
+        <div class="chart-container" id="chart-container"></div>
+        <div class="stats" id="stats" style="text-align: center; margin: 1rem 0;"></div>
+        <h3 style="color: #7af7ff;">Comments Analysis</h3>
+        <div class="comments-container" id="comments-container"></div>
+    </div>
+    
+    <!-- Event Comparison Container (initially hidden) -->
+    <div class="comparison-container" id="comparison-container">
+        <h2 class="comparison-title">Compare Events</h2>
+        <div class="vs-text">VS</div>
+        <p style="text-align: center; margin-bottom: 1.5rem;">Select 2-4 events to compare sentiment analysis:</p>
+        
+        <div class="event-selector" id="event-selector">
+            <!-- Event checkboxes will be added here dynamically -->
+        </div>
+        
+        <button class="compare-btn" id="compare-btn">Compare Selected Events</button>
+        
+        <div class="comparison-tabs">
+            <button class="tab-btn active" id="line-tab">Line Graph</button>
+            <button class="tab-btn" id="bar-tab">Bar Chart</button>
+        </div>
+        
+        <div class="comparison-chart-container">
+            <img id="line-chart" class="comparison-chart" src="" alt="Sentiment Comparison">
+            <p class="chart-caption">Line graph showing sentiment trends across different events</p>
+            
+            <img id="bar-chart" class="comparison-chart" style="display: none;" src="" alt="Sentiment Comparison">
+            <p class="chart-caption" style="display: none;">Bar chart comparing sentiment percentages</p>
+        </div>
+        
+        <div class="comparison-stats" id="comparison-stats">
+            <!-- Stats will be added here dynamically -->
+        </div>
+        
+        <button class="compare-btn" id="back-btn" style="margin-top: 2rem;">Back to Analysis</button>
+    </div>
+    
+    <!-- Issues Analysis Container (initially hidden) -->
+    <div class="issues-container" id="issues-container">
+        <h2 class="issues-title">Issues Analysis</h2>
+        <p style="text-align: center; margin-bottom: 1.5rem;">Discover how many people reported the same issues across events:</p>
+        
+        <div class="event-selector" id="issues-event-selector">
+            <!-- Event checkboxes will be added here dynamically -->
+        </div>
+        
+        <button class="issues-action-btn" id="analyze-issues-btn">Count Issues</button>
+        
+        <div class="issues-count-container" id="issues-count-container">
+            <table class="issues-table" id="issues-table">
+                <thead>
+                    <tr>
+                        <th>Issue Type</th>
+                        <th>People Count</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Issue rows will be added here dynamically -->
+                </tbody>
+            </table>
+            
+            <div id="issue-detail-section" style="display: none; width: 100%;">
+                <h3 style="margin-bottom: 1rem; color: #ff7a7a;">Issue Details: <span id="selected-issue-name"></span></h3>
+                <div class="comment-list" id="issue-comments">
+                    <!-- Comments will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+        
+        <button class="issues-action-btn" id="issues-back-btn" style="margin-top: 2rem;">Back to Analysis</button>
+    </div>
+    
+    <!-- Scroll Down Button -->
+    <div class="scroll-down-btn" id="scroll-btn"></div>
+
     <script>
         const text = "EMOTRIX";
         const subtitle = "An AI brain processing emotions";
@@ -308,6 +1445,38 @@
         const subtitleContainer = document.getElementById('subtitle-container');
         const button = document.querySelector('.enter-button');
         const buttonContainer = document.querySelector('.button-container');
+        const eventSelection = document.getElementById('event-selection');
+        const eventDropdown = document.getElementById('event-dropdown');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const loader = document.getElementById('loader');
+        const resultsContainer = document.getElementById('results-container');
+        const comparisonContainer = document.getElementById('comparison-container');
+        const eventSelector = document.getElementById('event-selector');
+        const compareBtn = document.getElementById('compare-btn');
+        const backBtn = document.getElementById('back-btn');
+        const lineTab = document.getElementById('line-tab');
+        const barTab = document.getElementById('bar-tab');
+        const lineChart = document.getElementById('line-chart');
+        const barChart = document.getElementById('bar-chart');
+        const comparisonStats = document.getElementById('comparison-stats');
+        
+        // Add new variables for issues analysis
+        const issuesContainer = document.getElementById('issues-container');
+        const issuesEventSelector = document.getElementById('issues-event-selector');
+        const analyzeIssuesBtn = document.getElementById('analyze-issues-btn');
+        const issuesBackBtn = document.getElementById('issues-back-btn');
+        const heatmapTab = document.getElementById('heatmap-tab');
+        const radarTab = document.getElementById('radar-tab');
+        const threeDTab = document.getElementById('3d-tab');
+        const detailsTab = document.getElementById('details-tab');
+        const heatmapChart = document.getElementById('heatmap-chart');
+        const radarChart = document.getElementById('radar-chart');
+        const bar3dChart = document.getElementById('bar3d-chart');
+        const issuesOverview = document.getElementById('issues-overview');
+        const deepResearchBtn = document.getElementById('deep-research-btn');
+        const deepResearchSection = document.getElementById('deep-research-section');
+        const issuesSummary = document.getElementById('issues-summary');
+        const issuesRecommendations = document.getElementById('issues-recommendations');
 
         // Create and animate rocket
         function createRocket() {
@@ -402,7 +1571,69 @@
         // Start animations when page loads
         window.addEventListener('load', startAnimations);
 
-        // Replace the button click handler with this simpler version:
+        // Scroll button functionality
+        const scrollBtn = document.getElementById('scroll-btn');
+        
+        // Show scroll button when content exceeds viewport
+        function toggleScrollButton() {
+            if (document.body.scrollHeight > window.innerHeight + 100) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        }
+        
+        // Toggle between scroll down and scroll up based on position
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            const scrollMax = document.body.scrollHeight - window.innerHeight;
+            
+            if (scrollPosition > scrollMax * 0.7) {
+                scrollBtn.classList.add('up');
+            } else {
+                scrollBtn.classList.remove('up');
+            }
+            
+            toggleScrollButton();
+        });
+        
+        // Handle scroll button click
+        scrollBtn.addEventListener('click', () => {
+            if (scrollBtn.classList.contains('up')) {
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                // Scroll to bottom
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+        
+        // Check if scroll button should be visible on page load and after content changes
+        window.addEventListener('load', toggleScrollButton);
+        window.addEventListener('resize', toggleScrollButton);
+
+        // Fetch events from Flask backend
+        function loadEvents() {
+            fetch('/get_events')
+                .then(response => response.json())
+                .then(data => {
+                    data.events.forEach(event => {
+                        const option = document.createElement('option');
+                        option.value = event;
+                        option.textContent = event;
+                        eventDropdown.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading events:', error));
+        }
+
+        // Button click handler - show event selection
         button.addEventListener('click', () => {
             // Remove the button
             buttonContainer.innerHTML = '';
@@ -411,39 +1642,522 @@
             const textContainer = document.createElement('div');
             textContainer.className = 'analyzing-text-container';
 
-            const words = ['GENERATING', 'ANALYZING'];
-            let currentIndex = 0;
+            // Show "ANALYZING" text with animation
+            const text = document.createElement('div');
+            text.className = 'analyzing-text';
+            
+            "SELECT EVENT".split('').forEach((char, index) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.style.animationDelay = `${index * 50}ms`;
+                text.appendChild(span);
+            });
 
-            function showText() {
-                const text = document.createElement('div');
-                text.className = 'analyzing-text';
+            textContainer.appendChild(text);
+            buttonContainer.appendChild(textContainer);
+
+            // Show event selection after animation
+            setTimeout(() => {
+                text.classList.add('visible');
                 
-                // Split text into characters and create spans
-                words[currentIndex].split('').forEach((char, index) => {
-                    const span = document.createElement('span');
-                    span.textContent = char;
-                    span.style.animationDelay = `${index * 50}ms`;
-                    text.appendChild(span);
-                });
+                // Load events
+                loadEvents();
+                
+                // Show event selection form
+                setTimeout(() => {
+                    eventSelection.style.display = 'flex';
+                }, 1000);
+            }, 100);
+        });
 
-                textContainer.innerHTML = '';
-                textContainer.appendChild(text);
-
-                // Trigger animation
-                requestAnimationFrame(() => {
-                    text.classList.add('visible');
-                });
-
-                currentIndex = (currentIndex + 1) % words.length;
+        // Analyze button click handler
+        analyzeBtn.addEventListener('click', () => {
+            const selectedEvent = eventDropdown.value;
+            if (!selectedEvent) {
+                alert('Please select an event');
+                return;
             }
 
-            // Initial text
-            showText();
+            // Show loading animation
+            eventSelection.style.display = 'none';
+            loader.style.display = 'block';
+            resultsContainer.style.display = 'none';
 
-            // Change text every 3 seconds
-            setInterval(showText, 3000);
+            // Send request to analyze endpoint
+            fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ event: selectedEvent })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loader
+                loader.style.display = 'none';
+                
+                if (data.error) {
+                    alert(data.error);
+                    eventSelection.style.display = 'flex';
+                    return;
+                }
 
-            buttonContainer.appendChild(textContainer);
+                // Display results
+                document.getElementById('event-title').textContent = selectedEvent.toUpperCase();
+                
+                // Display chart
+                const chartContainer = document.getElementById('chart-container');
+                chartContainer.innerHTML = `<img src="data:image/png;base64,${data.chart}" alt="Sentiment Chart">`;
+                
+                // Display stats
+                const statsContainer = document.getElementById('stats');
+                statsContainer.innerHTML = `
+                    <p>Total Comments: <strong>${data.total_comments}</strong> | 
+                    Positive: <strong>${data.sentiment_counts.Positive}</strong> | 
+                    Neutral: <strong>${data.sentiment_counts.Neutral}</strong> | 
+                    Negative: <strong>${data.sentiment_counts.Negative}</strong></p>
+                    ${data.note ? `<p class="note-text">${data.note}</p>` : ''}
+                `;
+                
+                // Display comments
+                const commentsContainer = document.getElementById('comments-container');
+                commentsContainer.innerHTML = '';
+                
+                data.comments.forEach(comment => {
+                    const commentEl = document.createElement('div');
+                    commentEl.classList.add('comment', comment.sentiment.toLowerCase());
+                    
+                    // Format confidence score as percentage
+                    const confidencePercent = Math.round(comment.confidence * 100);
+                    
+                    let commentHTML = `<p>${comment.text} <span class="confidence-score">${confidencePercent}% confidence</span></p>`;
+                    
+                    if (comment.sentiment === "Negative" && comment.issue) {
+                        // Format issue confidence score if available
+                        const issueConfidencePercent = comment.issue_confidence ? 
+                            Math.round(comment.issue_confidence * 100) : '';
+                        
+                        commentHTML += `<span class="issue-tag">Issue: ${comment.issue}</span>`;
+                        
+                        if (issueConfidencePercent) {
+                            commentHTML += `<span class="issue-confidence">${issueConfidencePercent}% sure</span>`;
+                        }
+                        
+                        if (comment.alert) {
+                            commentHTML += `<span class="alert-tag">⚠️ Priority Alert</span>`;
+                        }
+                    }
+                    
+                    commentEl.innerHTML = commentHTML;
+                    commentsContainer.appendChild(commentEl);
+                });
+                
+                // Ensure comments container is scrollable if needed
+                if (commentsContainer.scrollHeight > commentsContainer.clientHeight) {
+                    commentsContainer.style.overflowY = 'scroll';
+                }
+                
+                // Show results container
+                resultsContainer.style.display = 'block';
+                
+                // Initialize comparison link
+                initComparisonSelector();
+                
+                // Check if scroll button should be visible after results loaded
+                setTimeout(toggleScrollButton, 100);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loader.style.display = 'none';
+                alert('An error occurred. Please try again.');
+                eventSelection.style.display = 'flex';
+            });
+        });
+
+        // After all data is loaded, initialize comparison selector
+        function initComparisonSelector() {
+            const compareLink = document.createElement('a');
+            compareLink.href = '#';
+            compareLink.textContent = 'Compare with other events';
+            compareLink.style.color = '#7af7ff';
+            compareLink.style.textDecoration = 'none';
+            compareLink.style.display = 'block';
+            compareLink.style.textAlign = 'center';
+            compareLink.style.marginTop = '1.5rem';
+            compareLink.style.fontSize = '1rem';
+            
+            compareLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                resultsContainer.style.display = 'none';
+                eventSelection.style.display = 'none';
+                comparisonContainer.style.display = 'block';
+                
+                // Populate event selector if needed
+                if (eventSelector.children.length === 0) {
+                    populateEventSelector();
+                }
+            });
+            
+            // Add issues analysis link
+            const issuesLink = document.createElement('a');
+            issuesLink.href = '#';
+            issuesLink.textContent = 'Analyze Issues';
+            issuesLink.style.color = '#ff7a7a';
+            issuesLink.style.textDecoration = 'none';
+            issuesLink.style.display = 'block';
+            issuesLink.style.textAlign = 'center';
+            issuesLink.style.marginTop = '1rem';
+            issuesLink.style.fontSize = '1rem';
+            
+            issuesLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                resultsContainer.style.display = 'none';
+                eventSelection.style.display = 'none';
+                comparisonContainer.style.display = 'none';
+                issuesContainer.style.display = 'block';
+                
+                // Populate event selector if needed
+                if (issuesEventSelector.children.length === 0) {
+                    populateIssuesEventSelector();
+                }
+            });
+            
+            resultsContainer.appendChild(compareLink);
+            resultsContainer.appendChild(issuesLink);
+        }
+        
+        // Populate the event selector with checkboxes
+        function populateEventSelector() {
+            fetch('/get_events')
+                .then(response => response.json())
+                .then(data => {
+                    eventSelector.innerHTML = '';
+                    data.events.forEach((event, index) => {
+                        const id = `event-${index}`;
+                        
+                        const input = document.createElement('input');
+                        input.type = 'checkbox';
+                        input.className = 'event-checkbox';
+                        input.id = id;
+                        input.value = event;
+                        
+                        const label = document.createElement('label');
+                        label.className = 'event-label';
+                        label.htmlFor = id;
+                        label.textContent = event;
+                        
+                        eventSelector.appendChild(input);
+                        eventSelector.appendChild(label);
+                    });
+                })
+                .catch(error => console.error('Error loading events for comparison:', error));
+        }
+        
+        // Populate the issues event selector with checkboxes
+        function populateIssuesEventSelector() {
+            fetch('/get_events')
+                .then(response => response.json())
+                .then(data => {
+                    issuesEventSelector.innerHTML = '';
+                    data.events.forEach((event, index) => {
+                        const id = `issues-event-${index}`;
+                        
+                        const input = document.createElement('input');
+                        input.type = 'checkbox';
+                        input.className = 'event-checkbox';
+                        input.id = id;
+                        input.value = event;
+                        
+                        const label = document.createElement('label');
+                        label.className = 'event-label';
+                        label.htmlFor = id;
+                        label.textContent = event;
+                        
+                        issuesEventSelector.appendChild(input);
+                        issuesEventSelector.appendChild(label);
+                    });
+                })
+                .catch(error => console.error('Error loading events for issues analysis:', error));
+        }
+        
+        // Handle comparison button click
+        compareBtn.addEventListener('click', () => {
+            // Get selected events
+            const selectedEvents = Array.from(eventSelector.querySelectorAll('input:checked'))
+                .map(input => input.value);
+            
+            if (selectedEvents.length < 2) {
+                alert('Please select at least 2 events to compare');
+                return;
+            }
+            
+            if (selectedEvents.length > 4) {
+                alert('Please select a maximum of 4 events to compare');
+                return;
+            }
+            
+            // Show loading animation
+            loader.style.display = 'block';
+            comparisonContainer.style.display = 'none';
+            
+            // Send comparison request
+            fetch('/compare', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ events: selectedEvents })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loader
+                loader.style.display = 'none';
+                
+                if (data.error) {
+                    alert(data.error);
+                    comparisonContainer.style.display = 'block';
+                    return;
+                }
+                
+                // Display charts
+                lineChart.src = `data:image/png;base64,${data.line_chart}`;
+                barChart.src = `data:image/png;base64,${data.bar_chart}`;
+                
+                // Display stats
+                comparisonStats.innerHTML = '';
+                
+                data.events.forEach((event, index) => {
+                    const statDiv = document.createElement('div');
+                    statDiv.className = 'event-stat';
+                    statDiv.style.setProperty('--i', index); // For staggered animation
+                    
+                    const counts = data.sentiment_data[event];
+                    const total = data.total_comments[event];
+                    
+                    statDiv.innerHTML = `
+                        <div class="event-stat-name">${event}</div>
+                        <div>Total: ${total} comments</div>
+                        <div class="stat-value stat-positive">Positive: ${counts.Positive} (${Math.round(counts.Positive/total*100)}%)</div>
+                        <div class="stat-value stat-neutral">Neutral: ${counts.Neutral} (${Math.round(counts.Neutral/total*100)}%)</div>
+                        <div class="stat-value stat-negative">Negative: ${counts.Negative} (${Math.round(counts.Negative/total*100)}%)</div>
+                    `;
+                    
+                    comparisonStats.appendChild(statDiv);
+                });
+                
+                // Delay showing charts for animation effect
+                setTimeout(() => {
+                    document.querySelectorAll('.comparison-chart').forEach(chart => {
+                        chart.style.opacity = '0';
+                        chart.style.animation = 'floatIn 1s ease-out forwards';
+                    });
+                }, 300);
+                
+                // Show comparison container with animation
+                comparisonContainer.style.display = 'block';
+                comparisonContainer.style.opacity = '0';
+                comparisonContainer.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    comparisonContainer.style.transition = 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+                    comparisonContainer.style.opacity = '1';
+                    comparisonContainer.style.transform = 'translateY(0)';
+                }, 100);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loader.style.display = 'none';
+                alert('An error occurred. Please try again.');
+                comparisonContainer.style.display = 'block';
+            });
+        });
+        
+        // Handle tab switching
+        lineTab.addEventListener('click', () => {
+            lineTab.classList.add('active');
+            barTab.classList.remove('active');
+            lineChart.style.display = 'block';
+            barChart.style.display = 'none';
+            lineChart.nextElementSibling.style.display = 'block';
+            barChart.nextElementSibling.style.display = 'none';
+        });
+        
+        barTab.addEventListener('click', () => {
+            barTab.classList.add('active');
+            lineTab.classList.remove('active');
+            barChart.style.display = 'block';
+            lineChart.style.display = 'none';
+            barChart.nextElementSibling.style.display = 'block';
+            lineChart.nextElementSibling.style.display = 'none';
+        });
+        
+        // Handle back button
+        backBtn.addEventListener('click', () => {
+            comparisonContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+        });
+
+        // Handle issues analysis button click
+        analyzeIssuesBtn.addEventListener('click', () => {
+            // Get selected events
+            const selectedEvents = Array.from(issuesEventSelector.querySelectorAll('input:checked'))
+                .map(input => input.value);
+            
+            if (selectedEvents.length < 1) {
+                alert('Please select at least 1 event to analyze');
+                return;
+            }
+            
+            if (selectedEvents.length > 5) {
+                alert('Please select a maximum of 5 events to analyze');
+                return;
+            }
+            
+            // Show loading animation
+            loader.style.display = 'block';
+            issuesContainer.style.display = 'none';
+            
+            // Send issues analysis request
+            fetch('/issues_analysis', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ events: selectedEvents })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loader
+                loader.style.display = 'none';
+                
+                if (data.error) {
+                    alert(data.error);
+                    issuesContainer.style.display = 'block';
+                    return;
+                }
+                
+                // Populate issues table
+                populateIssuesTable(data);
+                
+                // Show issues container with animation
+                issuesContainer.style.display = 'block';
+                issuesContainer.style.opacity = '0';
+                issuesContainer.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    issuesContainer.style.transition = 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+                    issuesContainer.style.opacity = '1';
+                    issuesContainer.style.transform = 'translateY(0)';
+                }, 100);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loader.style.display = 'none';
+                alert('An error occurred. Please try again.');
+                issuesContainer.style.display = 'block';
+            });
+        });
+        
+        // Populate the issues table with data
+        function populateIssuesTable(data) {
+            const tableBody = document.querySelector('#issues-table tbody');
+            tableBody.innerHTML = '';
+            
+            const issues = data.issues;
+            const issueCounts = data.issue_counts;
+            const issueColors = data.issue_colors;
+            
+            issues.forEach((issue, index) => {
+                // Only add rows for issues that have comments
+                if (issueCounts[issue].total > 0) {
+                    const row = document.createElement('tr');
+                    row.dataset.issue = issue;
+                    
+                    // Create cells with issue information
+                    row.innerHTML = `
+                        <td>
+                            <div class="issue-name">
+                                <span class="issue-color" style="background-color: ${issueColors[issue]}"></span>
+                                ${issue}
+                            </div>
+                        </td>
+                        <td class="issue-count">${issueCounts[issue].total}</td>
+                        <td class="issue-details">
+                            ${Object.entries(issueCounts[issue].events).map(([event, count]) => 
+                                `<div>${event}: ${count} people</div>`
+                            ).join('')}
+                        </td>
+                    `;
+                    
+                    // Add click event to show comments
+                    row.addEventListener('click', () => {
+                        showIssueComments(data, issue);
+                    });
+                    
+                    tableBody.appendChild(row);
+                }
+            });
+            
+            // Add default message if no issues found
+            if (tableBody.children.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `
+                    <td colspan="3" style="text-align: center; padding: 2rem;">
+                        No issues found in the selected events.
+                    </td>
+                `;
+                tableBody.appendChild(emptyRow);
+            }
+        }
+        
+        // Show comments for a specific issue
+        function showIssueComments(data, issueName) {
+            const detailSection = document.getElementById('issue-detail-section');
+            const issueNameSpan = document.getElementById('selected-issue-name');
+            const commentsList = document.getElementById('issue-comments');
+            const issueColors = data.issue_colors;
+            
+            // Set issue name and show detail section
+            issueNameSpan.textContent = issueName;
+            detailSection.style.display = 'block';
+            
+            // Clear previous comments
+            commentsList.innerHTML = '';
+            
+            // Get comments for this issue
+            const comments = data.issue_comments[issueName] || [];
+            
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<p style="text-align: center; padding: 1rem;">No detailed comments available for this issue.</p>';
+                return;
+            }
+            
+            // Add each comment to the list
+            comments.forEach(comment => {
+                const commentItem = document.createElement('div');
+                commentItem.className = 'comment-item';
+                commentItem.classList.toggle('alert', comment.alert);
+                commentItem.style.setProperty('--comment-color', issueColors[issueName]);
+                
+                commentItem.innerHTML = `
+                    <div class="comment-text">"${comment.text}"</div>
+                    <div class="comment-meta">
+                        <span class="comment-event">${comment.event}</span>
+                        ${comment.alert ? '<span class="alert-badge">Priority Alert</span>' : ''}
+                    </div>
+                `;
+                
+                commentsList.appendChild(commentItem);
+            });
+            
+            // Scroll to detail section
+            detailSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Handle issues back button
+        issuesBackBtn.addEventListener('click', () => {
+            issuesContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
         });
     </script>
 </body>
