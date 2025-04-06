@@ -1,0 +1,188 @@
+I'll break down the major segments of the code and explain what each part does:
+
+1. **Initial Setup and Imports**
+```python
+import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import json
+import io
+import base64
+import re
+from flask import Flask, render_template, request, jsonify, Response
+import numpy as np
+import requests
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+```
+- This section imports all necessary libraries
+- `pandas` for data handling
+- `matplotlib` for creating visualizations
+- `Flask` for web application framework
+- `sklearn` for machine learning components
+
+2. **Machine Learning Model Initialization**
+```python
+def initialize_ml_model():
+    df = pd.read_csv(r"C:\Users\HP\Downloads\sentiment_analysis_dataset.csv")
+    df = df.drop(columns=["Event Name", "Platform", "Timestamp"])
+    df_positive = df[df["Sentiment"] == "Positive"]
+    df_negative = df[df["Sentiment"] == "Negative"]
+    df_neutral = df[df["Sentiment"] == "Neutral"]
+    df_sorted = pd.concat([df_positive, df_neutral, df_negative], ignore_index=True)
+    X = df_sorted["Text"]
+    y = df_sorted["Sentiment"]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    vectorizer = TfidfVectorizer()
+    X_train_tfidf = vectorizer.fit_transform(X_train)
+    model = MultinomialNB()
+    model.fit(X_train_tfidf, y_train)
+    return model, vectorizer
+```
+- Loads training data from CSV
+- Prepares data for machine learning
+- Uses TF-IDF vectorization to convert text to numbers
+- Trains a Naive Bayes classifier
+- Returns the trained model and vectorizer
+
+3. **Sentiment Analysis Function**
+```python
+def analyze_sentiment(text):
+    text_tfidf = vectorizer.transform([text])
+    sentiment = model.predict(text_tfidf)[0]
+    probabilities = model.predict_proba(text_tfidf)[0]
+    sentiment_index = list(model.classes_).index(sentiment)
+    confidence = probabilities[sentiment_index]
+    return sentiment, confidence
+```
+- Takes a text input
+- Converts text to numerical features
+- Predicts sentiment (Positive/Negative/Neutral)
+- Calculates confidence score
+- Returns both sentiment and confidence
+
+4. **Issue Detection System**
+```python
+def detect_issue(text):
+    text_lower = text.lower()
+    issue_scores = {issue: 0 for issue in issue_patterns}
+    
+    for issue, patterns in issue_patterns.items():
+        for pattern in patterns:
+            matches = re.findall(pattern, text_lower)
+            issue_scores[issue] += len(matches)
+    
+    alert_required = any(phrase in text_lower for phrase in alert_phrases)
+    
+    if any(issue_scores.values()):
+        best_issue = max(issue_scores.items(), key=lambda x: x[1])
+        confidence = min(0.95, 0.6 + best_issue[1] * 0.1)
+        return best_issue[0], alert_required, confidence
+    else:
+        return "Other Issues", alert_required, 0.5
+```
+- Analyzes text for specific issues
+- Uses pattern matching to identify problems
+- Checks for urgent alert phrases
+- Returns the main issue, alert status, and confidence
+
+5. **Event Analysis Functions**
+```python
+def analyze_event_comments(event_name):
+    events_df["Event Name"] = events_df["Event Name"].str.strip().str.lower()
+    matched_rows = events_df[events_df["Event Name"] == event_name.strip().lower()]
+    
+    if matched_rows.empty:
+        return None, 0
+    
+    comments = matched_rows["Comment"].tolist()
+    if len(comments) > 50:
+        comments = comments[:50]
+    
+    sentiment_counts = {
+        "Positive": 0,
+        "Neutral": 0,
+        "Negative": 0
+    }
+    
+    for comment in comments:
+        sentiment, _ = analyze_sentiment(comment)
+        sentiment_counts[sentiment] += 1
+    
+    return sentiment_counts, len(comments)
+```
+- Analyzes comments for a specific event
+- Limits analysis to 50 comments
+- Counts sentiments
+- Returns sentiment distribution and total comments
+
+6. **Visualization Functions**
+```python
+def create_visualization(sentiment_counts, title):
+    plt.figure(figsize=(10, 8))
+    plt.style.use('dark_background')
+    # ... visualization code ...
+    img = io.BytesIO()
+    plt.savefig(img, format='png', dpi=120)
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+    plt.close()
+    return plot_url
+```
+- Creates visualizations using matplotlib
+- Uses dark theme for better visibility
+- Converts plots to base64 for web display
+- Returns the image URL
+
+7. **API Endpoints**
+```python
+@app.route('/analyze', methods=['POST'])
+def analyze_sentiment_endpoint():
+    # ... endpoint code ...
+    
+
+@app.route('/compare', methods=['POST'])
+def compare_events():
+    # ... endpoint code ...
+
+@app.route('/issues_analysis', methods=['POST'])
+def issues_analysis():
+    # ... endpoint code ...
+```
+- `/analyze`: Analyzes sentiment for a single event
+- `/compare`: Compares multiple events
+- `/issues_analysis`: Analyzes issues across events
+- Each endpoint returns JSON responses with analysis results
+
+8. **Social Media Integration**
+```python
+def fetch_youtube_comments(video_id, api_key):
+    # ... YouTube API code ...
+
+def fetch_instagram_comments(post_url, access_token):
+    # ... Instagram API code ...
+```
+- Functions to fetch comments from YouTube and Instagram
+- Uses respective APIs to get data
+- Processes and returns comment data
+
+9. **Main Application Setup**
+```python
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+```
+- Initializes the Flask application
+- Runs the server in debug mode
+- Makes the application accessible from any IP
+
+The code follows a modular structure where:
+1. Data is loaded and processed
+2. Machine learning models are trained
+3. Analysis functions process the data
+4. Results are visualized
+5. API endpoints serve the results
+6. Social media integration provides additional data sources
+
+Each component works together to provide a complete sentiment analysis and issue detection system for event feedback.
